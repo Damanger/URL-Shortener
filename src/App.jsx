@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
-import './App.css'
-import InputShortener from './components/InputShortener'
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import InputShortener from "./components/InputShortener";
 
 function App() {
-
-  const [inputValue,setInpudValue] = useState('');
-
   return (
-    <div className='container'>
-      <InputShortener setInpudValue={setInpudValue}/>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/" element={<InputShortener />} />
+        <Route
+          path="/display"
+          element={<div>Este es el QR con los datos generados.</div>}
+        />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
