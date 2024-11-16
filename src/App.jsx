@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import InputShortener from "./components/InputShortener";
-import DisplayData from "./components/DisplayData";
+import DisplayData from "./components/display";
 
 function App() {
   return (
