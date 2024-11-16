@@ -18,17 +18,40 @@ const DisplayData = () => {
 
     // Si no hay datos, muestra un mensaje
     if (!data || !data.riderName) {
-        return <div style={{ padding: "20px", textAlign: "center" }}>No se encontraron datos válidos.</div>;
+        return (
+            <div style={{ padding: "20px", textAlign: "center" }}>
+                No se encontraron datos válidos.
+            </div>
+        );
     }
 
     return (
         <div style={{ padding: "20px", textAlign: "center" }}>
             <h2>Datos del Motociclista</h2>
-            <p><strong>Nombre:</strong> {data.riderName}</p>
-            <p><strong>Edad:</strong> {data.riderAge}</p>
-            <p><strong>Tipo de Sangre:</strong> {data.bloodType}</p>
-            <p><strong>Contacto de Emergencia:</strong> {data.emergencyContact}</p>
-            <button onClick={() => window.print()}>Descargar como Imagen</button>
+            <p>
+                <strong>Nombre:</strong> {data.riderName}
+            </p>
+            <p>
+                <strong>Edad:</strong> {data.riderAge}
+            </p>
+            <p>
+                <strong>Tipo de Sangre:</strong> {data.bloodType}
+            </p>
+            <p>
+                <strong>Contacto de Emergencia:</strong> {data.emergencyContact}
+            </p>
+            <button
+                onClick={() => window.print()}
+                style={{
+                    backgroundColor: "gold",
+                    padding: "0.5rem 1rem",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "black",
+                }}
+            >
+                Descargar como Imagen
+            </button>
         </div>
     );
 };
