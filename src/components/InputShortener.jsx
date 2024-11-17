@@ -12,24 +12,30 @@ const InputShortener = ({ setInputValue }) => {
   const [selectedOption, setSelectedOption] = useState("8");
   const [generatedPassword, setGeneratedPassword] = useState("");
   const [emergencyContact, setEmergencyContact] = useState("");
-  const [riderName, setRiderName] = useState("");
-  const [riderAge, setRiderAge] = useState("");
+  const [personName, setpersonName] = useState("");
+  const [personAge, setpersonAge] = useState("");
   const [bloodType, setBloodType] = useState("");
+  const [allergyOption, setAllergyOption] = useState("");
+  const [allergies, setAllergies] = useState("");
+  const [medicationOption, setMedicationOption] = useState("");
+  const [medications, setMedications] = useState("");
   const [qrDataReady, setQrDataReady] = useState(false);
   const [qrUrl, setQrUrl] = useState("");
 
   const handleGenerateQR = () => {
-    if (emergencyContact && riderName && riderAge && bloodType) {
+    if (emergencyContact && personName && personAge && bloodType) {
       const data = {
         emergencyContact,
-        riderName,
-        riderAge,
-        bloodType
+        personName,
+        personAge,
+        bloodType,
+        allergies: allergyOption === "Sí" ? allergies : allergyOption,
       };
-      // Generar una URL dinámica para los datos
-      const url = `https://qr-generator-and-url-shortener.vercel.app/display?data=${encodeURIComponent(JSON.stringify(data))}`;
+      const url = `https://qr-generator-and-url-shortener.vercel.app/display?data=${encodeURIComponent(
+        JSON.stringify(data)
+      )}`;
       setQrDataReady(true);
-      setQrUrl(url); // Guardamos la URL generada
+      setQrUrl(url);
     } else {
       setQrDataReady(false);
       alert("Por favor, completa todos los campos.");
@@ -101,24 +107,24 @@ const InputShortener = ({ setInputValue }) => {
             top: "5rem",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "auto", // Asegura que el contenedor tenga el tamaño adecuado
+            width: "auto", 
             display: "flex",
             alignItems: "center",
           }}
         >
           <select
             style={{
-              padding: "0.5rem 1rem", // Espaciado interno
-              fontSize: "1rem", // Tamaño de fuente
-              border: "2px solid #FFD700", // Borde dorado
-              borderRadius: "5px", // Bordes redondeados
-              backgroundColor: "#333", // Fondo oscuro
-              color: "#FFD700", // Color de texto dorado
-              fontWeight: "bold", // Fuente en negrita
-              appearance: "none", // Elimina el estilo predeterminado del select
-              cursor: "pointer", // Cambia el cursor al pasar por encima
-              transition: "all 0.3s ease", // Transición suave para cambios
-              width: "200px", // Establecer un ancho fijo para el select
+              padding: "0.5rem 1rem",
+              fontSize: "1rem", 
+              border: "2px solid #FFD700", 
+              borderRadius: "5px", 
+              backgroundColor: "#333", 
+              color: "#FFD700", 
+              fontWeight: "bold",
+              appearance: "none", 
+              cursor: "pointer", 
+              transition: "all 0.3s ease", 
+              width: "200px",
             }}
             onChange={(e) => setIsSelected(e.target.value)}
           >
@@ -134,10 +140,10 @@ const InputShortener = ({ setInputValue }) => {
               right: "10px",
               top: "50%",
               transform: "translateY(-50%)",
-              pointerEvents: "none", // Asegura que no interfiera con la selección
+              pointerEvents: "none", 
               borderLeft: "5px solid transparent",
               borderRight: "5px solid transparent",
-              borderTop: "5px solid #FFD700", // Color dorado para la flecha
+              borderTop: "5px solid #FFD700",
             }}
           />
         </div>
@@ -346,69 +352,138 @@ const InputShortener = ({ setInputValue }) => {
 
         {/* QR Data Section */}
         {isSelected === "qrData" && (
-          <div className="card"
+          <div
+            className="card"
             style={{
               position: "absolute",
-              marginTop: "10vh",
               top: "50vh",
               left: "50%",
               transform: "translate(-50%, -50%)",
-            }}>
+              padding: "1rem",
+              maxWidth: "fit-content",
+              maxHeight: "35rem",
+              overflow: "auto",
+              boxSizing: "border-box",
+            }}
+          >
             <h1>
-              Generar QR con <span style={{ color: "gold" }}>datos del Motociclista</span>
+              Contacto<span style={{ color: "gold" }}> de Emergencia</span>
             </h1>
-            <div style={{ marginBottom: "1rem" }}>
-              <label>Contacto de emergencia:</label>
-              <input
-                type="number"
-                placeholder="Número de contacto"
-                value={emergencyContact}
-                onChange={(e) => {
-                  const value = e.target.value.slice(0, 10);
-                  setEmergencyContact(value);
-                }}
-                style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
-              />
-            </div>
-            <div style={{ marginBottom: "1rem" }}>
-              <label>Nombre del motociclista:</label>
-              <input
-                type="text"
-                placeholder="Nombre completo"
-                value={riderName}
-                onChange={(e) => setRiderName(e.target.value)}
-                style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
-              />
-            </div>
-            <div style={{ marginBottom: "1rem" }}>
-              <label>Edad del motociclista:</label>
-              <input
-                type="number"
-                placeholder="Edad"
-                value={riderAge}
-                onChange={(e) => setRiderAge(e.target.value)}
-                style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
-              />
-            </div>
-            <div style={{ marginBottom: "1rem" }}>
-              <label>Tipo de sangre:</label>
-              <select
-                value={bloodType}
-                onChange={(e) => setBloodType(e.target.value)}
-                style={{ width: "90%", padding: "0.5rem", marginTop: "0.5rem" }}
-              >
-                <option value="" disabled>
-                  Selecciona un tipo de sangre
-                </option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-              </select>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr",
+                gap: "1rem",
+              }}
+            >
+              <div>
+                <label>Contacto de emergencia:</label>
+                <input
+                  type="number"
+                  placeholder="Número de contacto"
+                  value={emergencyContact}
+                  onChange={(e) => setEmergencyContact(e.target.value.slice(0, 10))}
+                  style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
+                />
+              </div>
+              <div>
+                <label>Nombre de la persona:</label>
+                <input
+                  type="text"
+                  placeholder="Nombre completo"
+                  value={personName}
+                  onChange={(e) => setpersonName(e.target.value)}
+                  style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
+                />
+              </div>
+              <div>
+                <label>Edad de la persona:</label>
+                <input
+                  type="number"
+                  placeholder="Edad"
+                  value={personAge}
+                  onChange={(e) => setpersonAge(e.target.value)}
+                  style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
+                />
+              </div>
+              <div>
+                <label>Tipo de sangre:</label>
+                <select
+                  value={bloodType}
+                  onChange={(e) => setBloodType(e.target.value)}
+                  style={{ width: "85%", padding: "0.5rem", marginTop: "0.5rem" }}
+                >
+                  <option value="" disabled>
+                    Selecciona un tipo de sangre
+                  </option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+              <div>
+                <label>¿Alergias?</label>
+                <select
+                  value={allergyOption}
+                  onChange={(e) => setAllergyOption(e.target.value)}
+                  style={{ width: "85%", padding: "0.5rem", marginTop: "0.5rem" }}
+                >
+                  <option value="" disabled>
+                    ¿Tiene alergias?
+                  </option>
+                  <option value="No">No</option>
+                  <option value="Sí">Sí</option>
+                </select>
+              </div>
+              {allergyOption === "Sí" && (
+                <div>
+                  <label>Especifica las alergias:</label>
+                  <textarea
+                    value={allergies}
+                    onChange={(e) => setAllergies(e.target.value)}
+                    style={{
+                      width: "85%",
+                      padding: "0.5rem",
+                      marginTop: "0.5rem",
+                      resize: "vertical",
+                    }}
+                  ></textarea>
+                </div>
+              )}
+              <div>
+                <label>¿Toma algún medicamento?</label>
+                <select
+                  value={medicationOption}
+                  onChange={(e) => setMedicationOption(e.target.value)}
+                  style={{ width: "85%", padding: "0.5rem", marginTop: "0.5rem" }}
+                >
+                  <option value="" disabled>
+                    Selecciona una opción
+                  </option>
+                  <option value="No">No</option>
+                  <option value="Sí">Sí</option>
+                </select>
+              </div>
+              {medicationOption === "Sí" && (
+                <div>
+                  <label>Especifica los medicamentos:</label>
+                  <textarea
+                    value={medications}
+                    onChange={(e) => setMedications(e.target.value)}
+                    style={{
+                      width: "85%",
+                      padding: "0.5rem",
+                      marginTop: "0.5rem",
+                      resize: "vertical",
+                    }}
+                  ></textarea>
+                </div>
+              )}
             </div>
             <button
               onClick={handleGenerateQR}
@@ -417,16 +492,15 @@ const InputShortener = ({ setInputValue }) => {
                 backgroundColor: "gold",
                 padding: "0.5rem",
                 color: "black",
+                width: "100%",
               }}
             >
               Generar QR
             </button>
             {qrDataReady && (
-              <QRCode
-                value={qrUrl}
-                fgColor={qrColor}
-                style={{ marginTop: "1rem" }}
-              />
+              <div style={{ textAlign: "center", marginTop: "1rem" }}>
+                <QRCode value={qrUrl} fgColor={qrColor} />
+              </div>
             )}
           </div>
         )}

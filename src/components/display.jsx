@@ -16,8 +16,8 @@ const DisplayData = () => {
         console.error("Error al parsear los datos del QR:", error);
     }
 
-    // Si no hay datos, muestra un mensaje
-    if (!data || !data.riderName) {
+    // Si no hay datos válidos, muestra un mensaje
+    if (!data || Object.keys(data).length === 0) {
         return (
             <div style={{ padding: "20px", textAlign: "center" }}>
                 No se encontraron datos válidos.
@@ -27,19 +27,14 @@ const DisplayData = () => {
 
     return (
         <div style={{ padding: "20px", textAlign: "center" }}>
-            <h2>Datos del Motociclista</h2>
-            <p>
-                <strong>Nombre:</strong> {data.riderName}
-            </p>
-            <p>
-                <strong>Edad:</strong> {data.riderAge}
-            </p>
-            <p>
-                <strong>Tipo de Sangre:</strong> {data.bloodType}
-            </p>
-            <p>
-                <strong>Contacto de Emergencia:</strong> {data.emergencyContact}
-            </p>
+            <h2>Datos de la persona</h2>
+            <div style={{ textAlign: "left", display: "inline-block" }}>
+                {Object.entries(data).map(([key, value]) => (
+                    <p key={key}>
+                        <strong>{formatLabel(key)}:</strong> {value || "No especificado"}
+                    </p>
+                ))}
+            </div>
             <button
                 onClick={() => window.print()}
                 style={{
@@ -48,12 +43,20 @@ const DisplayData = () => {
                     border: "none",
                     cursor: "pointer",
                     color: "black",
+                    marginTop: "1rem",
                 }}
             >
                 Descargar como Imagen
             </button>
         </div>
     );
+};
+
+// Función para formatear claves en etiquetas legibles
+const formatLabel = (label) => {
+    return label
+        .replace(/([A-Z])/g, " $1") // Agrega un espacio antes de cada mayúscula
+        .replace(/^./, (str) => str.toUpperCase()); // Capitaliza la primera letra
 };
 
 export default DisplayData;
