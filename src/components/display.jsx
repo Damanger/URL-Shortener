@@ -28,16 +28,22 @@ const DisplayData = () => {
     return (
         <div style={styles.container}>
             <h2>Datos de la persona</h2>
-            <div style={styles.dataContainer}>
-                {Object.entries(data).map(([key, value]) => (
-                    <p key={key}>
-                        <strong>{formatLabel(key)}:</strong> {value || "No especificado"}
-                    </p>
-                ))}
-            </div>
-            <button onClick={() => window.print()} style={styles.downloadButton}>
-                Descargar como Imagen
-            </button>
+            <table style={styles.table}>
+                <thead>
+                    <tr>
+                        <th style={styles.th}>Campo</th>
+                        <th style={styles.th}>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.entries(data).map(([key, value]) => (
+                        <tr key={key}>
+                            <td style={styles.td}><strong>{formatLabel(key)}:</strong></td>
+                            <td style={styles.td}>{value || "No especificado"}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };
@@ -55,18 +61,20 @@ const styles = {
         padding: "20px",
         textAlign: "center",
     },
-    dataContainer: {
+    table: {
+        width: "100%",
+        marginTop: "1rem",
+        borderCollapse: "collapse",
         textAlign: "left",
-        display: "inline-block",
-        marginTop: "1rem",
     },
-    downloadButton: {
-        backgroundColor: "gold",
-        padding: "0.5rem 1rem",
-        border: "none",
-        cursor: "pointer",
-        color: "black",
-        marginTop: "1rem",
+    th: {
+        padding: "10px",
+        backgroundColor: "#f4f4f4",
+        borderBottom: "2px solid #ddd",
+    },
+    td: {
+        padding: "10px",
+        borderBottom: "1px solid #ddd",
     },
 };
 
