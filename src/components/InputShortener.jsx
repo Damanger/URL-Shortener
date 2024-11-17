@@ -12,34 +12,59 @@ const InputShortener = ({ setInputValue }) => {
   const [selectedOption, setSelectedOption] = useState("8");
   const [generatedPassword, setGeneratedPassword] = useState("");
   const [emergencyContact, setEmergencyContact] = useState("");
-  const [personName, setpersonName] = useState("");
-  const [personAge, setpersonAge] = useState("");
+  const [personName, setPersonName] = useState("");
+  const [personAge, setPersonAge] = useState("");
   const [bloodType, setBloodType] = useState("");
   const [allergyOption, setAllergyOption] = useState("");
   const [allergies, setAllergies] = useState("");
   const [medicationOption, setMedicationOption] = useState("");
   const [medications, setMedications] = useState("");
-  const [qrDataReady, setQrDataReady] = useState(false);
-  const [qrUrl, setQrUrl] = useState("");
+  const [qrDataReady, setQRDataReady] = useState(false);
+  const [qrUrl, setQRUrl] = useState("");
+  const [error, setError] = useState("");
 
   const handleGenerateQR = () => {
-    if (emergencyContact && personName && personAge && bloodType) {
-      const data = {
-        emergencyContact,
-        personName,
-        personAge,
-        bloodType,
-        allergies: allergyOption === "Sí" ? allergies : allergyOption,
-      };
-      const url = `https://qr-generator-and-url-shortener.vercel.app/display?data=${encodeURIComponent(
-        JSON.stringify(data)
-      )}`;
-      setQrDataReady(true);
-      setQrUrl(url);
-    } else {
-      setQrDataReady(false);
-      alert("Por favor, completa todos los campos.");
+    // Validación de todos los campos
+    if (
+      !emergencyContact ||
+      !personName ||
+      !personAge ||
+      !bloodType ||
+      !allergyOption ||
+      !medicationOption
+    ) {
+      setError("Por favor, complete todos los campos requeridos.");
+      return;
     }
+
+    // Validación de número de contacto (10 a 12 dígitos)
+    if (!/^\d{10,12}$/.test(emergencyContact)) {
+      setError("El número de contacto debe tener entre 10 y 12 dígitos.");
+      return;
+    }
+
+    // Validación de edad (0 a 99 años)
+    if (personAge < 0 || personAge > 99) {
+      setError("La edad debe estar entre 0 y 99.");
+      return;
+    }
+
+    setError(""); // Limpia el error si todos los campos son válidos
+
+    // Genera el objeto con los datos
+    const data = {
+      emergencyContact,
+      personName,
+      personAge,
+      bloodType,
+      allergies: allergyOption === "Sí" ? allergies : "No",
+      medications: medicationOption === "Sí" ? medications : "No",
+    };
+
+    // Genera la URL del QR con los datos
+    const dataString = encodeURIComponent(JSON.stringify(data));
+    setQRUrl(`https://qr-generator-and-url-shortener.vercel.app/display?data=${dataString}`);
+    setQRDataReady(true);
   };
 
   const handleClick = () => {
@@ -107,7 +132,7 @@ const InputShortener = ({ setInputValue }) => {
             top: "5rem",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: "auto", 
+            width: "auto",
             display: "flex",
             alignItems: "center",
           }}
@@ -115,15 +140,15 @@ const InputShortener = ({ setInputValue }) => {
           <select
             style={{
               padding: "0.5rem 1rem",
-              fontSize: "1rem", 
-              border: "2px solid #FFD700", 
-              borderRadius: "5px", 
-              backgroundColor: "#333", 
-              color: "#FFD700", 
+              fontSize: "1rem",
+              border: "2px solid #FFD700",
+              borderRadius: "5px",
+              backgroundColor: "#333",
+              color: "#FFD700",
               fontWeight: "bold",
-              appearance: "none", 
-              cursor: "pointer", 
-              transition: "all 0.3s ease", 
+              appearance: "none",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
               width: "200px",
             }}
             onChange={(e) => setIsSelected(e.target.value)}
@@ -140,7 +165,7 @@ const InputShortener = ({ setInputValue }) => {
               right: "10px",
               top: "50%",
               transform: "translateY(-50%)",
-              pointerEvents: "none", 
+              pointerEvents: "none",
               borderLeft: "5px solid transparent",
               borderRight: "5px solid transparent",
               borderTop: "5px solid #FFD700",
@@ -369,6 +394,11 @@ const InputShortener = ({ setInputValue }) => {
             <h1>
               Contacto<span style={{ color: "gold" }}> de Emergencia</span>
             </h1>
+
+            {error && (
+              <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>
+            )}
+
             <div
               style={{
                 display: "grid",
@@ -376,13 +406,14 @@ const InputShortener = ({ setInputValue }) => {
                 gap: "1rem",
               }}
             >
+              {/* Input fields */}
               <div>
                 <label>Contacto de emergencia:</label>
                 <input
                   type="number"
                   placeholder="Número de contacto"
                   value={emergencyContact}
-                  onChange={(e) => setEmergencyContact(e.target.value.slice(0, 10))}
+                  onChange={(e) => setEmergencyContact(e.target.value.slice(0, 12))}
                   style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
                 />
               </div>
@@ -392,7 +423,7 @@ const InputShortener = ({ setInputValue }) => {
                   type="text"
                   placeholder="Nombre completo"
                   value={personName}
-                  onChange={(e) => setpersonName(e.target.value)}
+                  onChange={(e) => setPersonName(e.target.value)}
                   style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
                 />
               </div>
@@ -402,7 +433,7 @@ const InputShortener = ({ setInputValue }) => {
                   type="number"
                   placeholder="Edad"
                   value={personAge}
-                  onChange={(e) => setpersonAge(e.target.value)}
+                  onChange={(e) => setPersonAge(e.target.value)}
                   style={{ width: "80%", padding: "0.5rem", marginTop: "0.5rem" }}
                 />
               </div>
