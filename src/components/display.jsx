@@ -71,6 +71,7 @@ const styles = {
         padding: "10px",
         backgroundColor: "gold",
         borderBottom: "2px solid #ddd",
+        color: "#333",
     },
     td: {
         padding: "10px",

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import QRCode from "qrcode.react";
+import Swal from "sweetalert2";
 import "../App.css";
 
 const InputShortener = ({ setInputValue }) => {
@@ -33,23 +34,33 @@ const InputShortener = ({ setInputValue }) => {
       !allergyOption ||
       !medicationOption
     ) {
-      setError("Por favor, complete todos los campos requeridos.");
+      Swal.fire({
+        icon: "error",
+        title: "Campos incompletos",
+        text: "Por favor, complete todos los campos requeridos.",
+      });
       return;
     }
 
     // Validación de número de contacto (10 a 12 dígitos)
     if (!/^\d{10,12}$/.test(emergencyContact)) {
-      setError("El número de contacto debe tener entre 10 y 12 dígitos.");
+      Swal.fire({
+        icon: "error",
+        title: "Número de contacto inválido",
+        text: "El número de contacto debe tener entre 10 y 12 dígitos.",
+      });
       return;
     }
 
     // Validación de edad (0 a 99 años)
     if (personAge < 0 || personAge > 99) {
-      setError("La edad debe estar entre 0 y 99.");
+      Swal.fire({
+        icon: "error",
+        title: "Edad inválida",
+        text: "La edad debe estar entre 0 y 99.",
+      });
       return;
     }
-
-    setError(""); // Limpia el error si todos los campos son válidos
 
     // Genera el objeto con los datos
     const data = {
@@ -149,7 +160,7 @@ const InputShortener = ({ setInputValue }) => {
               appearance: "none",
               cursor: "pointer",
               transition: "all 0.3s ease",
-              width: "200px",
+              width: "15rem",
             }}
             onChange={(e) => setIsSelected(e.target.value)}
           >
@@ -395,10 +406,6 @@ const InputShortener = ({ setInputValue }) => {
               Contacto<span style={{ color: "gold" }}> de Emergencia</span>
             </h1>
 
-            {error && (
-              <div style={{ color: "red", marginBottom: "1rem" }}>{error}</div>
-            )}
-
             <div
               style={{
                 display: "grid",
@@ -530,7 +537,7 @@ const InputShortener = ({ setInputValue }) => {
             </button>
             {qrDataReady && (
               <div style={{ textAlign: "center", marginTop: "1rem" }}>
-                <QRCode value={qrUrl} fgColor={qrColor} />
+                <QRCode value={qrUrl} fgColor={"black"} />
               </div>
             )}
           </div>
