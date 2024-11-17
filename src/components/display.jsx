@@ -65,11 +65,11 @@ const styles = {
         width: "100%",
         marginTop: "1rem",
         borderCollapse: "collapse",
-        textAlign: "left",
+        textAlign: "center",
     },
     th: {
         padding: "10px",
-        backgroundColor: "#f4f4f4",
+        backgroundColor: "gold",
         borderBottom: "2px solid #ddd",
     },
     td: {

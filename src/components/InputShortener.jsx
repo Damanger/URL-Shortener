@@ -155,7 +155,7 @@ const InputShortener = ({ setInputValue }) => {
           >
             <option value="contenido">URL Shortener</option>
             <option value="password">Password Generator</option>
-            <option value="qrData">QR Data</option>
+            <option value="qrData">Emergency Contact QR</option>
           </select>
 
           {/* Flecha personalizada */}
