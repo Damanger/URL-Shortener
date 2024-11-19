@@ -27,7 +27,7 @@ const DisplayData = () => {
 
     return (
         <div style={styles.container}>
-            <h2>Datos de la persona</h2>
+            <h2 style={{color:"white"}}>Datos de la persona</h2>
             <table style={styles.table}>
                 <thead>
                     <tr>
@@ -76,6 +76,7 @@ const styles = {
     td: {
         padding: "10px",
         borderBottom: "1px solid #ddd",
+        color: "white",
     },
 };
 
